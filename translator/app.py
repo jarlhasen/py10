@@ -14,11 +14,21 @@ data = json.load(open("data.json"))
 # version two : we make the program alittle bit smarter let's make really interesting
 
 def translate(w):
-    w = w.lower()
+    w = w.lower() # all the data in the json file is in lower case.
     if w in data:
         return data[w]
-    elif len(get_close_matches(w,data.keys())) >0:
-        return "Did you mean %s instead?" % get_close_matches(w,data.keys())[0]
+    elif len(get_close_matches(w,data.keys())) >0: # make sure that we have a result in the list and the list not a blank list
+        yn = input("Did you mean [%s] instead?  \nEnter Y if yes, or N if NO:\n" % get_close_matches(w,data.keys())[0])
+        yn = yn.upper() # Just incase the user entered a 'y' instead of 'Y'
+        if yn == "Y":
+            return data[get_close_matches(w, data.keys())[0]]  # user agreede that that is the best answer.
+        elif yn == "N":
+            return "The word dosen't exist ,please double check it !"
+        else:
+            return "we didn't understand your entry."
+    else:
+        return "The word dosen't exist ,please double check it !"
+# this is the user pace.
 word = input("Enter a word:")
 print(translate(word))
 
