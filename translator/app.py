@@ -17,6 +17,10 @@ def translate(w):
     w = w.lower() # all the data in the json file is in lower case.
     if w in data:
         return data[w]
+    elif w.title() in data:  # if user entered "texas" this will check for "Texas" as well.
+        return data[w.title()]
+    elif w.upper() in data:  # in case user enters words like USA or NATO
+        return data[w.upper()]
     elif len(get_close_matches(w,data.keys())) >0: # make sure that we have a result in the list and the list not a blank list
         yn = input("Did you mean [%s] instead?  \nEnter Y if yes, or N if NO:\n" % get_close_matches(w,data.keys())[0])
         yn = yn.upper() # Just incase the user entered a 'y' instead of 'Y'
@@ -30,7 +34,13 @@ def translate(w):
         return "The word dosen't exist ,please double check it !"
 # this is the user pace.
 word = input("Enter a word:")
-print(translate(word))
+output = (translate(word))
+
+if type(output) == list: # we want to show the results in perline if they have a different meanings.
+    for item in output:
+        print(item)
+else:
+    print(output)
 
 
 # remember to use python standard library
